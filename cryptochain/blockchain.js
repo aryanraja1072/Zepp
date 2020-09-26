@@ -15,16 +15,22 @@ class Blockchain{
         if(JSON.stringify(chain[0])!==JSON.stringify(Block.getGenesisBlock()))
             return false;
         for(let i=1;i<chain.length;i++){
-            const {timestamp,data,previousHash,hash} = chain[i];
+            const {timestamp,data,previousHash,hash,difficulty,nonce} = chain[i];
             const orgPreviousHash = chain[i-1].hash;
+            const previousDifficulty = chain[i-1].difficulty;
+            if(Math.abs(difficulty-previousDifficulty)>1)
+                return false;
             if(previousHash !== orgPreviousHash)
                 return false;
-            const recalculatedHash = cryptoHash(timestamp,data,previousHash);
+            const recalculatedHash = cryptoHash(timestamp,data,previousHash,difficulty,nonce);
             if(recalculatedHash !== hash)
                 return false;
             
         }
         return true;
+    }
+    getLastBlock() {
+        return this.chain[this.chain.length-1];
     }
     replaceChain(chain){
         if(this.chain.length >= chain.length){

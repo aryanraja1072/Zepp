@@ -1,5 +1,6 @@
 const Blockchain = require('./blockchain');
 const Block = require('./block');
+const cryptoHash = require('./crypto-hash');
 describe('Blockchain',()=>{
     let blockchain,newBlockchain,orgChain;
     beforeEach(() => {
@@ -17,6 +18,12 @@ describe('Blockchain',()=>{
         const newData='lorem ipsum';
         blockchain.addBlock({data:newData});
         expect(blockchain.chain[blockchain.chain.length-1].data).toEqual(newData);
+    });
+    describe('getLastBlock()',() => {
+        it('returns the last block of the chain',() =>{
+            blockchain.addBlock({data:'Temp-Transaction'});
+            expect(blockchain.getLastBlock()).toEqual(blockchain.chain[blockchain.chain.length-1]);
+        });
     });
     describe('isValidChain()',() =>{
         describe('when chain doesn\'t start with the genesis block',() =>{
@@ -40,7 +47,20 @@ describe('Blockchain',()=>{
                      expect(Blockchain.isValidChain(blockchain.chain)).toBe(false);
                 });
             });
-
+            describe('and there is a jump in difficulty',() =>{
+                it('returns false',() =>{
+                    const lastBlock = blockchain.getLastBlock();
+                    const timestamp = Date.now();
+                    const data = 'Temp-transaction';
+                    const difficulty = lastBlock.difficulty-3;
+                    const previousHash = lastBlock.hash;
+                    const nonce = 1;
+                    const hash = cryptoHash(timestamp,data,difficulty,previousHash,nonce);
+                    const badBlock = new Block({timestamp,data,difficulty,previousHash,nonce,hash});
+                    blockchain.chain.push(badBlock);
+                    expect(Blockchain.isValidChain(blockchain.chain)).toBe(false);
+                });
+            });
             describe('and chain contains a block with an invalid field',() =>{
                 it('returns false',() => {               
                     blockchain.chain[2].data = 'corrupted-data';
