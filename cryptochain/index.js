@@ -1,8 +1,9 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const request = require('request');
+//const path = require('path');
 const Blockchain = require('./blockchain');
-const PubSub = require('./pubnub');
+const PubSub = require('./app/pubnub');
 
 const DEFAULT_PORT = 3000;
 let PEER_PORT;
@@ -20,7 +21,9 @@ const syncChain = () => {
         }
     });
 };
+
 app.use(bodyParser.json());
+app.use(express.static(__dirname+"/client/dist/"))
 
 app.get('/api/blocks',function(req,res){
     return res.json(blockchain.chain);
@@ -31,7 +34,9 @@ app.post('/api/mine',function(req,res){
     pubSub.broadCastChain();
     res.redirect('/api/blocks');
 });
-
+app.get('*', (req,res) => {
+    res.sendFile('/client/dist/index.html',{root:'.'});
+});
 if(process.env.GENERATE_PEER_PORT === 'true'){
     PEER_PORT = DEFAULT_PORT + Math.ceil(Math.random() * 1000);
 }
