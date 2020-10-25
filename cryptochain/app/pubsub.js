@@ -30,7 +30,11 @@ class PubSub {
         const parsedMsg = JSON.parse(message);
         switch (channel) {
           case CHANNELS.BLOCKCHAIN:
-            this.blockchain.replaceChain(parsedMsg);
+            this.blockchain.replaceChain(parsedMsg, true, () => {
+              this.transactionPool.clearBlockchainTransactions({
+                chain: parsedMsg,
+              });
+            });
             break;
           case CHANNELS.TRANSACTION:
             if (parsedMsg.input.address !== this.wallet.publicKey) {
@@ -46,13 +50,13 @@ class PubSub {
   publish({ channel, message }) {
     this.pubNub.publish({ channel, message });
   }
-  broadCastChain() {
+  broadcastChain() {
     this.publish({
       channel: CHANNELS.BLOCKCHAIN,
       message: JSON.stringify(this.blockchain.chain),
     });
   }
-  broadCastTransaction(transaction) {
+  broadcastTransaction(transaction) {
     this.publish({
       channel: CHANNELS.TRANSACTION,
       message: JSON.stringify(transaction),
