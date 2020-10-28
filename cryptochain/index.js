@@ -40,7 +40,7 @@ const syncWithRootState = () => {
       if (!error && response.statusCode === 200) {
         const rootTransactionPoolMap = JSON.parse(body);
         console.log(
-          "replace transaction-pool map on a synce with",
+          "replace transaction-pool map on a sync with",
           rootTransactionPoolMap
         );
         transactionPool.setMap(rootTransactionPoolMap);
@@ -71,6 +71,7 @@ app.get("/api/mine-transactions", (req, res) => {
 });
 app.get("/api/wallet-info", (req, res) => {
   const address = wallet.publicKey;
+  console.log(`Requesting wallet-info for address:${address}`);
   return res.json({
     address,
     balance: Wallet.calculateBalance({ chain: blockchain.chain, address }),

@@ -1,0 +1,52 @@
+body {
+  background-color: #5cdb95;
+  color: #05386b;
+  text-align: center;
+  font-size: 16px;
+  word-wrap: break-word;
+  margin-bottom: 7px;
+}
+.logo {
+  width: 256px;
+  height: 256px;
+}
+h4 {
+  font-size: 20px;
+  font-family: "Ubuntu", sans-serif;
+  margin-top: 2%;
+  color: white;
+}
+.WalletInfo {
+  width: 700px;
+}
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.Block {
+  border: 1px solid white;
+  border-radius: 10px;
+  padding: 5%;
+  margin: 2%;
+  width: 700px;
+  text-align: center;
+}
+a {
+  color: #05386b;
+  border: solid 1px #05386b;
+  padding: 4px;
+  margin: 5px;
+  border-radius: 5px;
+}
+a:hover {
+  color: white;
+  border-color: white;
+}
+.ConductTransaction,
+.TransactionPool {
+  margin: 10%;
+}
+
+
+/*# sourceMappingURL=/src.9ad09f98.css.map */
