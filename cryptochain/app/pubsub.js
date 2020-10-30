@@ -1,9 +1,9 @@
 const PubNub = require("pubnub");
 
 const credentials = {
-  publishKey: "pub-c-dbc628b4-0fda-47ef-9c8c-3534b473279a",
-  subscribeKey: "sub-c-8d3e6404-00ac-11eb-81c8-6616e216ad91",
-  secretKey: "sec-c-MmZlZTE1OTgtZTE1NS00ODg5LThiMDQtNTJiNWQ1ZjVjMTUz",
+  publishKey:"KEY",
+  subscribeKey: "KEY",
+  secretKey: "KEY"
 };
 
 const CHANNELS = {
